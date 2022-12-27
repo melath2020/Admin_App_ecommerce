@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import {AiOutlineDashboard,AiOutlineShoppingCart,AiOutlineUser,AiOutlineBgColors} from 'react-icons/ai'
 import {SiBrandfolder } from 'react-icons/si';
+import {IoIosNotifications } from 'react-icons/io';
 import {BiCategoryAlt } from 'react-icons/bi';
 import {FaClipboardList,FaBloggerB } from 'react-icons/fa';
 import {ImBlog } from 'react-icons/im';
@@ -158,8 +159,20 @@ const MainLayout = () => {
           className: 'trigger',
           onClick: () => setCollapsed(!collapsed),
         })}
-        <div className='justify-content-end'>
-          <h1>hgg</h1>
+        <div className='d-flex gap-4 align-items-center'>
+          <div className='position-relative'><IoIosNotifications className='fs-4'/>
+          <span className='badge bg-warning rounded-circle p-1 position-absolute'>3</span></div>
+          <div className="d-flex gap-3 align-items-center">
+            <div>
+              <img width={32}
+              height={32}
+               src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg" alt="" />
+            </div>
+            <div>
+              <h5 className="mb-0">Aswin</h5>
+              <p className="mb-0">aswinsudhakaran98@gmail.com</p>
+            </div>
+          </div>
         </div>
       </Header>
       <Content
@@ -170,7 +183,10 @@ const MainLayout = () => {
           background: colorBgContainer,
         }}
       >
-        <Outlet/>
+     
+       <Outlet/>
+      
+  
       </Content>
     </Layout>
   </Layout>
