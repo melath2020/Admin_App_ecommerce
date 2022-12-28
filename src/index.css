@@ -59,6 +59,10 @@ body{
 main{
   overflow-y:scroll;
   background-color:transparent !important;
+  height:80vh;
+}
+main::-webkit-scrollbar{
+  width: 0px;
 }
 .ant-layout-header h5{
   line-height:20px;
