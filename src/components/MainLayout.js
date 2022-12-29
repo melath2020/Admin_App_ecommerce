@@ -11,7 +11,7 @@ import {BiCategoryAlt } from 'react-icons/bi';
 import {FaClipboardList,FaBloggerB } from 'react-icons/fa';
 import {ImBlog } from 'react-icons/im';
 import { Layout, Menu, theme } from 'antd';
-import { useNavigate,Outlet } from 'react-router-dom';
+import { useNavigate,Outlet, Link } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
@@ -162,16 +162,21 @@ const MainLayout = () => {
         <div className='d-flex gap-4 align-items-center'>
           <div className='position-relative'><IoIosNotifications className='fs-4'/>
           <span className='badge bg-warning rounded-circle p-1 position-absolute'>3</span></div>
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center dropdown">
             <div>
               <img width={32}
               height={32}
                src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg" alt="" />
             </div>
-            <div>
+            <div type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               <h5 className="mb-0">Aswin</h5>
               <p className="mb-0">aswinsudhakaran98@gmail.com</p>
             </div>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li  ><Link className="dropdown-item py-2 mb-0 mb-1" style={{height:"auto",lineHeight:"20px"}} to="/">View Profile</Link></li>
+    <li ><Link className="dropdown-item py-2 mb-0 mb-1" style={{height:"auto",lineHeight:"20px"}} to="/">Signout</Link></li>
+    
+            </ul>
           </div>
         </div>
       </Header>
