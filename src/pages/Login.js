@@ -29,10 +29,10 @@ const Login = () => {
   });
   const {user,isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
   useEffect(()=>{
-    if(!user==null || isSuccess){
+    if(isSuccess){
       navigate("admin")
     }else{
-      alert('not')
+      navigate("")
     }
   },[user,isLoading,isError,isSuccess,message])
   return (
@@ -45,6 +45,9 @@ const Login = () => {
       <div className='my-5 w-25 bg-white rounded-3 mx-auto p-3'>
         <h3 className='text-center'>Login </h3>
         <p className='text-center'>Login to your account to continue</p>
+        <div className="error text-center">
+          {message.message === "Rejected"? "You are not an admin": ""}
+        </div>
        <form action="" onSubmit={formik.handleSubmit}>
        <CustomInput type="text" name='email' Label="Email Address" id="Email" val={formik.values.email} onCh={formik.handleChange('email')} />
       <div className="error">
