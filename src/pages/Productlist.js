@@ -62,7 +62,7 @@ for (let i = 0; i < productState.length; i++) {
     brand:productState[i].brand,
     category:productState[i].category,
     color:productState[i].color,
-    price: `$ ${productState[i].price}`,
+    price: `${productState[i].price}`,
     actions:<>
     <Link className='fs-3 ms-3 text-danger' to="/"><BiEdit/></Link>
     <Link className='fs-3 ms-3 text-danger' to="/"><AiFillDelete/></Link></>
