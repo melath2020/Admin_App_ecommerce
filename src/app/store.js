@@ -3,12 +3,19 @@ import authReducer from '../features/auth/authSlice';
 import customerReducer from "../features/customers/customerSlice";
 import productReducer from "../features/product/productSlice";
 import brandReducer from "../features/brand/brandSlice";
+import pCategoryReducer from "../features/pcategory/pcategorySlice";
+import blogReducer from "../features/blogs/blogSlice";
+import bcategoryReducer from "../features/bcategory/bcategorySlice";
 
 export const store=configureStore({
     reducer:{
         auth:authReducer,
         customer:customerReducer,
         product:productReducer,
-        brand:brandReducer
+        brand:brandReducer,
+        pCategory:pCategoryReducer,
+        blogs:blogReducer,
+        bCategory:bcategoryReducer
+
     }
 })
