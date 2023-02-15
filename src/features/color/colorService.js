@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
 
-const getEnquiries=async()=>{
-    const responce=await axios.get(`${base_url}enquiry/`)
+const getColors=async()=>{
+    const responce=await axios.get(`${base_url}color/`)
     
     return responce.data;
 }
 
 
-const enquiryService={
-    getEnquiries,
+const colorService={
+    getColors,
 }
-export default enquiryService;
+export default colorService;
