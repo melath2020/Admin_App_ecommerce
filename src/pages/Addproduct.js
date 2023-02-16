@@ -8,10 +8,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBrands } from '../features/brand/brandSlice';
+import {Select} from 'antd';
 import { getCategories } from '../features/pcategory/pcategorySlice';
-import Multiselect from "react-widgets/Multiselect";
 import { getColors } from '../features/color/colorSlice';
-import "react-widgets/styles.css";
 import Dropzone from 'react-dropzone';
 import { delImg, uploadImg } from '../features/upload/uploadSlice';
 import { createProducts } from '../features/product/productSlice';
@@ -45,11 +44,11 @@ const Addproduct = () => {
   const colorState = useSelector((state) => state.color.colors);
   const imgState = useSelector((state) => state.upload.images);
   
-  const colors = [];
+  const coloropt = [];
   colorState.forEach((i) => {
-    colors.push({
-      _id: i._id,
-      color: i.title,
+    coloropt.push({
+      value: i._id,
+      label: i.title,
     })
   })
 
@@ -86,9 +85,9 @@ const Addproduct = () => {
       dispatch(createProducts(values))
     },
   });
-  const [desc, setDesc] = useState();
-  const handleDesc = (e) => {
-    setDesc(e);
+  
+  const handleColors=(e)=>{
+    setColor(e)
   }
   return (
     <div><h3 className='mb-4 title'>Add Product</h3>
@@ -136,13 +135,8 @@ const Addproduct = () => {
             {formik.touched.category && formik.errors.category}
           </div>
 
-          <Multiselect name="color"
-            dataKey="id"
-            textField="color"
-            data={colors}
-            onChange={(e) => setColor(e)}
-
-          />
+          <Select mode="multiple" allowClear className='w-100' placeholder="Select Colors" defaultValue={color}
+           onChange={(i)=>handleColors(i)} options={coloropt}/>
           <div className='error'>
             {formik.touched.color && formik.errors.color}
           </div>
