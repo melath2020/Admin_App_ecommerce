@@ -53,7 +53,7 @@ export const productSlice=createSlice({
             state.isLoading=false;
             state.isError=false;
             state.isSuccess=true;
-            state.products=action.payload;
+            state.createdProduct=action.payload;
             
         })
         .addCase(createProducts.rejected,(state,action)=>{

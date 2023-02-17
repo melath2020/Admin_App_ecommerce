@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react'
 import CustomInput from '../components/CustomInput';
+import {useNavigate} from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { InboxOutlined } from '@ant-design/icons';
@@ -14,6 +15,8 @@ import { getColors } from '../features/color/colorSlice';
 import Dropzone from 'react-dropzone';
 import { delImg, uploadImg } from '../features/upload/uploadSlice';
 import { createProducts } from '../features/product/productSlice';
+  import { toast } from 'react-toastify';
+
 
 
 let schema = Yup.object().shape({
@@ -22,12 +25,16 @@ let schema = Yup.object().shape({
   price: Yup.string().required('Price is required'),
   brand: Yup.string().required('Brand is required'),
   category: Yup.string().required('Category is required'),
-  color: Yup.array().required('Colors are required'),
+  tags: Yup.string().required('Tag is required'),
+  color: Yup.array().min(1,"pick atleast one color")
+  .required('Colors are required'),
   quantity: Yup.string().required('Quantity is required'),
 
 });
 const Addproduct = () => {
+
   const dispatch = useDispatch()
+  const navigate= useNavigate()
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
 
@@ -43,6 +50,17 @@ const Addproduct = () => {
   const catState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
   const imgState = useSelector((state) => state.upload.images);
+  const newProduct = useSelector((state) => state.product);
+  const {isSuccess,isError,isLoading,createdProduct}=newProduct;
+
+  useEffect(()=>{
+    if(isSuccess && createdProduct){
+      toast.success("Product Added Successfully");
+    }
+    if(isError){
+      toast.error("Something went Wrong");
+    }
+  },[isSuccess,isError,isLoading])
   
   const coloropt = [];
   colorState.forEach((i) => {
@@ -63,7 +81,7 @@ const Addproduct = () => {
 
 
   useEffect(()=>{
-    formik.values.color = color;
+    formik.values.color = color ? color:"";
     formik.values.images = img;
   },[color,img])
   
@@ -75,6 +93,7 @@ const Addproduct = () => {
       price: "",
       brand: "",
       category: "",
+      tags:"",
       color: "",
       quantity: "",
       images:"",
@@ -83,6 +102,11 @@ const Addproduct = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       dispatch(createProducts(values))
+      formik.resetForm();
+      setColor(null);
+      setTimeout(()=> {
+        navigate('/admin/product-list')
+      },3000)
     },
   });
   
@@ -135,11 +159,24 @@ const Addproduct = () => {
             {formik.touched.category && formik.errors.category}
           </div>
 
+          <select name="tags" onChange={formik.handleChange('tags')}
+            onBlur={formik.handleBlur('tags')} value={formik.values.tags} id="" className='form-control py-3 mb-3'>
+            <option value="" disabled>Select tags</option>
+            <option value="featured">Featured</option>
+            <option value="popular">Popular</option>
+            <option value="special">Special</option>
+          </select>
+          <div className='error'>
+            {formik.touched.tags && formik.errors.tags}
+          </div>
+
           <Select mode="multiple" allowClear className='w-100' placeholder="Select Colors" defaultValue={color}
            onChange={(i)=>handleColors(i)} options={coloropt}/>
           <div className='error'>
             {formik.touched.color && formik.errors.color}
           </div>
+
+          
 
           <CustomInput type="number" label="Enter Product Quantity" name="quantity" onCh={formik.handleChange('quantity')}
             onBlr={formik.handleBlur('quantity')} val={formik.values.quantity} />
