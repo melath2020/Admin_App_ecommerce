@@ -2,29 +2,27 @@ import { React, useEffect, useState } from 'react'
 import CustomInput from '../components/CustomInput';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
 import { getCategories } from '../features/bcategory/bcategorySlice';
 import Dropzone from 'react-dropzone';
 import { delImg, uploadImg } from '../features/upload/uploadSlice';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { createBlogs } from '../features/blogs/blogSlice';
+import { toast } from 'react-toastify';
 
 let schema = Yup.object().shape({
     title: Yup.string().required("Title required"),
     description: Yup.string().required('Description is required'),
     category: Yup.string().required('Category is required'),
-    quantity: Yup.string().required('Quantity is required'),
 
 });
 
 const Addblog = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [images, setImages] = useState([]);
+
 
     useEffect(() => {
         dispatch(getCategories());
@@ -34,14 +32,17 @@ const Addblog = () => {
 
     const imgState = useSelector((state) => state.upload.images);
     const bCateState = useSelector((state) => state.bCategory.bCategories)
-    //   useEffect(()=>{
-    //     if(isSuccess && createdProduct){
-    //       toast.success("Product Added Successfully");
-    //     }
-    //     if(isError){
-    //       toast.error("Something went Wrong");
-    //     }
-    //   },[isSuccess,isError,isLoading])
+    const newBlog = useSelector((state) => state.blogs);
+    const {isSuccess,isError,isLoading,createdBlog}=newBlog;
+
+    useEffect(()=>{
+        if(isSuccess && createdBlog){
+          toast.success("Product Added Successfully");
+        }
+        if(isError){
+          toast.error("Something went Wrong");
+        }
+      },[isSuccess,isError,isLoading])
 
 
 
@@ -72,11 +73,12 @@ const Addblog = () => {
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            //   dispatch(createProducts(values))
+            
+              dispatch(createBlogs(values))
             formik.resetForm();
 
             setTimeout(() => {
-                navigate('/admin/product-list')
+                navigate('/admin/blog-list')
             }, 3000)
         },
     });
@@ -98,7 +100,7 @@ const Addblog = () => {
                         {formik.touched.title && formik.errors.title}
                     </div>
                     <select name="category" onChange={formik.handleChange('category')}
-                        onBlur={formik.handleBlur('category')} value={formik.values.category} className='form-control py-3 mb-3 mt-3'>
+                        onBlur={formik.handleBlur('category')} value={formik.values.category} className='form-control py-3  mt-3'>
                         <option value="">Select Blog Category</option>
                         {bCateState.map((i, j) => {
                             return <option key={j} value={i.title}>{i.title}</option>
@@ -107,7 +109,7 @@ const Addblog = () => {
                     <div className='error'>
                         {formik.touched.category && formik.errors.category}
                     </div>
-                    <ReactQuill theme="snow" name="description" onChange={formik.handleChange('description')}
+                    <ReactQuill className="mt-3" theme="snow" name="description" onChange={formik.handleChange('description')}
                         value={formik.values.description} />
                     <div className='error'>
                         {formik.touched.description && formik.errors.description}
@@ -125,6 +127,16 @@ const Addblog = () => {
                             )}
                         </Dropzone>
                     </div>
+                              <div className="showimages d-flex flex-wrap mt-3 gap-3">
+            {imgState?.map((i, j) => {
+              return (
+                <div className="position-relative" key={j}>
+                  <button type="button" onClick={()=>dispatch(delImg(i.public_id))} className="btn-close position-absolute"  style={{top:"10px", right:"10px"}}></button>
+                  <img src={i.url} alt="" width={200} height={200}/>
+                </div>
+              );
+            })}
+          </div>
                     <button className="btn btn-success border-0 rounded-3 my-5" type="submit">Add Blog</button>
                 </form>
             </div>
