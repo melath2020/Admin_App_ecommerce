@@ -4,6 +4,7 @@ import {
   MenuUnfoldOutlined,
  
 } from '@ant-design/icons';
+import {RiCouponLine} from 'react-icons/ri'
 import {AiOutlineDashboard,AiOutlineShoppingCart,AiOutlineUser,AiOutlineBgColors} from 'react-icons/ai'
 import {SiBrandfolder } from 'react-icons/si';
 import {IoIosNotifications } from 'react-icons/io';
@@ -108,6 +109,28 @@ const MainLayout = () => {
             key: 'orders',
             icon: <FaClipboardList className="fs-4"/>,
             label: 'Orders ',
+          },
+          {
+            key: 'marketing',
+            icon: <RiCouponLine className="fs-4"/>,
+            label: 'Marketing',
+            children:[
+              {
+                
+                  key: 'coupon',
+                  icon: <ImBlog  className="fs-4"/>,
+                  label: 'Add Coupon',
+                
+              },
+              {
+                
+                key: 'coupon-list',
+                icon: <RiCouponLine className="fs-4"/>,
+                label: 'Coupon List',
+              
+            },
+             
+            ]
           },
           {
             key: 'blogs',

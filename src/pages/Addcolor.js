@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import { toast } from 'react-toastify'; 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createColor } from '../features/color/colorSlice';
+import { createColor, resetState } from '../features/color/colorSlice';
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Color is required"),
@@ -38,6 +38,7 @@ const Addcolor = () => {
       formik.resetForm();
       
       setTimeout(()=> {
+        dispatch(resetState())
         navigate('/admin/list-color')
       },3000)
     },

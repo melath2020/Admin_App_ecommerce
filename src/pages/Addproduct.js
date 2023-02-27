@@ -14,7 +14,7 @@ import { getCategories } from '../features/pcategory/pcategorySlice';
 import { getColors } from '../features/color/colorSlice';
 import Dropzone from 'react-dropzone';
 import { delImg, uploadImg } from '../features/upload/uploadSlice';
-import { createProducts } from '../features/product/productSlice';
+import { createProducts, resetState } from '../features/product/productSlice';
   import { toast } from 'react-toastify';
 
 
@@ -105,6 +105,7 @@ const Addproduct = () => {
       formik.resetForm();
       setColor(null);
       setTimeout(()=> {
+        dispatch(resetState())
         navigate('/admin/product-list')
       },3000)
     },

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createBlogs } from '../features/blogs/blogSlice';
 import { toast } from 'react-toastify';
+import { resetState } from '../features/blogs/blogSlice';
 
 let schema = Yup.object().shape({
     title: Yup.string().required("Title required"),
@@ -78,6 +79,7 @@ const Addblog = () => {
             formik.resetForm();
 
             setTimeout(() => {
+                dispatch(resetState())
                 navigate('/admin/blog-list')
             }, 3000)
         },

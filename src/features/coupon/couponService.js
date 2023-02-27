@@ -2,22 +2,21 @@ import axios from 'axios';
 import { base_url } from '../../utils/base_url';
 import { config } from '../../utils/axiosconfig';
 
-const getBlogs=async()=>{
-    const responce=await axios.get(`${base_url}blog/`)
+const getCoupons=async()=>{
+    const responce=await axios.get(`${base_url}coupon/`)
     
     return responce.data;
 }
 
-const createBlogs=async(blog)=>{
-    const responce=await axios.post(`${base_url}blog/`,blog,config)
+const createCoupon=async(coupon)=>{
+    const responce=await axios.post(`${base_url}coupon/`,coupon,config)
     
     return responce.data;
 }
 
 
 const couponService={
-    getBlogs,
-    createBlogs
-    
+    getCoupons,
+    createCoupon
 }
 export default couponService;
