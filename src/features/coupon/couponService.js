@@ -3,7 +3,7 @@ import { base_url } from '../../utils/base_url';
 import { config } from '../../utils/axiosconfig';
 
 const getCoupons=async()=>{
-    const responce=await axios.get(`${base_url}coupon/`)
+    const responce=await axios.get(`${base_url}coupon/`,config)
     
     return responce.data;
 }

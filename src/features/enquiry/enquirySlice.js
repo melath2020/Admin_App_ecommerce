@@ -1,6 +1,5 @@
 import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
-import enquiryService from "../color/colorService";
-
+import enquiryService from "./enquiryService";
 
 
 
