@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import {BiEdit} from 'react-icons/bi'
 import {AiFillDelete} from 'react-icons/ai'
 import { useDispatch,useSelector } from 'react-redux';
-import { getBrands } from '../features/brand/brandSlice';
+import { getBrands, resetState } from '../features/brand/brandSlice';
 import {Link} from "react-router-dom"
 const columns= [
     {
@@ -28,6 +28,7 @@ const columns= [
 const Brandlist = () => {
   const dispatch=useDispatch()
   useEffect(()=>{
+    dispatch(resetState())
     dispatch(getBrands())
   },[])
   const brandState=useSelector((state)=>state.brand.brands)
@@ -37,7 +38,7 @@ const Brandlist = () => {
       key: i+1,
       title:brandState[i].title,
       actions:<>
-      <Link className='fs-3 ms-3 text-danger' to="/"><BiEdit/></Link>
+      <Link className='fs-3 ms-3 text-danger' to={`/admin/brand/${brandState[i]._id}`}><BiEdit/></Link>
       <Link className='fs-3 ms-3 text-danger' to="/"><AiFillDelete/></Link></>
     });
   }
