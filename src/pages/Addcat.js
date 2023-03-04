@@ -1,11 +1,11 @@
 import { React, useEffect } from 'react'
 import CustomInput from '../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { toast } from 'react-toastify'; 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createCategory, resetState } from '../features/pcategory/pcategorySlice';
+import { createCategory, getAProductCategory, resetState, updateAProductCategory } from '../features/pcategory/pcategorySlice';
 let schema = Yup.object().shape({
   title: Yup.string().required("Category Name is required"),
 
@@ -13,12 +13,28 @@ let schema = Yup.object().shape({
 const Addcat = () => {
   
   const dispatch=useDispatch();
+  const location=useLocation();
+  const getPCatId=location.pathname.split('/')[3];
   const navigate=useNavigate();
   const newCategory = useSelector((state) => state.pCategory);
-  const {isSuccess,isError,isLoading,createdCategory}=newCategory;
+  const {isSuccess,isError,isLoading,categoryName,createdCategory,updatedCategory}=newCategory;
+  useEffect(()=>{
+    if(getPCatId !== undefined){
+      dispatch(getAProductCategory(getPCatId));
+    
+      
+    }else{
+      dispatch(resetState())
+    }
+  },[getPCatId])
+  
   useEffect(()=>{
     if(isSuccess && createdCategory){
       toast.success("Category Added Successfully");
+    }
+    if(updatedCategory && isSuccess ){
+      toast.success("Category Updated Successfully");
+      navigate('/admin/list-category');
     }
     if(isError){
       toast.error("Something went Wrong");
@@ -26,26 +42,34 @@ const Addcat = () => {
   },[isSuccess,isError,isLoading])
   
   const formik = useFormik({
+    enableReinitialize:true,
     initialValues: {
 
-      title: "",
+      title: categoryName || "",
      
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createCategory(values))
-      formik.resetForm();
-      
-      setTimeout(()=> {
-        dispatch(resetState())
-        navigate('/admin/list-category')
-      },3000)
+      if(getPCatId!==undefined){
+        const data={id:getPCatId,pCatData:values}
+        dispatch(updateAProductCategory(data))
+      }else{
+        dispatch(createCategory(values))
+        formik.resetForm();
+        
+        setTimeout(()=> {
+          dispatch(resetState())
+          navigate('/admin/list-category')
+        },300)
+      }
+
+     
     },
   });
   return (
     <div>
         <h3 className='mb-4 title'>
-            Add Category
+        {getPCatId!==undefined ? "Edit" : "Add"}  Brand
         </h3>
         <div>
             <form onSubmit={formik.handleSubmit}>
@@ -54,7 +78,7 @@ const Addcat = () => {
               <div className='error'>
             {formik.touched.title && formik.errors.title}
           </div>
-                <button className="btn btn-success border-0 rounded-3 my-5" type="submit">Add Category</button>
+                <button className="btn btn-success border-0 rounded-3 my-5" type="submit">{getPCatId!==undefined ? "Update" : "Add"} Category</button>
             </form>
         </div>
     </div>

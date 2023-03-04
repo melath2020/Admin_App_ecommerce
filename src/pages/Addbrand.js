@@ -64,7 +64,7 @@ const Addbrand = () => {
         setTimeout(()=> {
         dispatch(resetState())
         navigate('/admin/list-brand')
-      },3000)
+      },300)
       }
       
       
