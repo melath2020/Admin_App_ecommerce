@@ -20,6 +20,31 @@ export const createColor=createAsyncThunk('color/create-color',async(colorData,t
     }
 })
 
+export const getAColor=createAsyncThunk('color/get-color',async(id,thunkAPI)=>{
+    try{
+        return await colorService.getColor(id)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+export const updateAColor=createAsyncThunk('color/update-color',async(color,thunkAPI)=>{
+    try{
+        return await colorService.updateColor(color)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+export const deleteAColor=createAsyncThunk('color/delete-color',async(id,thunkAPI)=>{
+    try{
+        return await colorService.deleteColor(id)
+    }catch(error){
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
+
 export const resetState=createAction("Reset_all")
 
 const initialState={
@@ -65,7 +90,54 @@ export const colorSlice=createSlice({
             state.isSuccess=false;
             state.message=action.error;
             
-        }).addCase(resetState,()=>initialState);
+        }) .addCase(getAColor.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(getAColor.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.colorName=action.payload.title;
+            
+        })
+        .addCase(getAColor.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+            
+        }).addCase(updateAColor.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(updateAColor.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.updatedColor=action.payload;
+            
+        })
+        .addCase(updateAColor.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+            
+        })
+        .addCase(deleteAColor.pending,(state)=>{
+            state.isLoading=true;
+        }).addCase(deleteAColor.fulfilled,(state,action)=>{
+            state.isLoading=false;
+            state.isError=false;
+            state.isSuccess=true;
+            state.deleteColor=action.payload;
+            
+        })
+        .addCase(deleteAColor.rejected,(state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.isSuccess=false;
+            state.message=action.error;
+            
+        })
+        .addCase(resetState,()=>initialState);
     }
 })
 
