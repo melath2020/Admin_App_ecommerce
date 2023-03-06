@@ -1,10 +1,13 @@
-import React , { useEffect } from 'react';
+import React , { useEffect,useState } from 'react';
 import { Table } from 'antd';
 import {BiEdit} from 'react-icons/bi'
 import {AiFillDelete} from 'react-icons/ai'
 import { useDispatch,useSelector } from 'react-redux';
-import { getAllCoupon } from '../features/coupon/couponSlice';
-import {Link} from "react-router-dom"
+import { deleteACoupon, getAllCoupon } from '../features/coupon/couponSlice';
+import {Link} from "react-router-dom";
+import CustomModel from '../components/CustomModel';
+
+
 const columns= [
     {
       title: 'SNo',
@@ -34,6 +37,15 @@ const columns= [
 
 
 const Couponlist = () => {
+  const [open, setOpen] = useState(false);
+  const [couponId,setcouponId]=useState("")
+  const showModal = (e) => {
+    setOpen(true);
+    setcouponId(e);
+  };
+  const hideModal = () => {
+    setOpen(false);
+  };
   const dispatch=useDispatch()
   useEffect(()=>{
     dispatch(getAllCoupon())
@@ -47,9 +59,18 @@ const Couponlist = () => {
       discount:couponState[i].discount,
       expiry:new Date(couponState[i].expiry).toLocaleString(),
       actions:<>
-      <Link className='fs-3 ms-3 text-danger' to="/"><BiEdit/></Link>
-      <Link className='fs-3 ms-3 text-danger' to="/"><AiFillDelete/></Link></>
+      <Link className='fs-3 ms-3 text-danger'  to={`/admin/coupon/${couponState[i]._id}`}><BiEdit/></Link>
+      <button className='fs-3 ms-3 text-danger bg-transparent border-0' onClick={()=>showModal(couponState[i]._id)}><AiFillDelete/></button></>
     });
+  }
+  const deleteCoupon=(e)=>{
+    setOpen(false);
+     dispatch(deleteACoupon(e));
+    setTimeout(()=>{
+      dispatch(getAllCoupon())
+     },200);
+
+   
   }
   return (
     <div><h3 className='mb-4 title'>Coupons</h3>
@@ -57,6 +78,10 @@ const Couponlist = () => {
     <div>
         <Table columns={columns} dataSource={data1} />
     </div>
+    <CustomModel  hideModal={hideModal} 
+    open={open} 
+    performAction={()=>{deleteCoupon(couponId)}}
+    title="Are you sure you want to delete this Coupon ?"/>
 </div>
   )
 }
