@@ -5,7 +5,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import { toast } from 'react-toastify'; 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createCoupon, getACoupon, resetState } from '../features/coupon/couponSlice';
+import { createCoupon, getACoupon, resetState, updateACoupon } from '../features/coupon/couponSlice';
 
 let schema = Yup.object().shape({
   name: Yup.string().required("Coupon Name is required"),
@@ -20,7 +20,7 @@ const Addcoupon = () => {
   const getCouponId=location.pathname.split('/')[3];
   const navigate=useNavigate();
   const newCoupon = useSelector((state) => state.coupon);
-  const {isSuccess,isError,isLoading,couponName,couponDiscount,couponExpiry,createdCoupon}=newCoupon;
+  const {isSuccess,isError,isLoading,couponName,couponDiscount,couponExpiry,createdCoupon,updatedCoupon}=newCoupon;
   const changeDateFormet = (date) => {
     const newDate=new Date(date).toLocaleDateString();
     const [month,day,year]=newDate.split("/");
@@ -41,8 +41,9 @@ const Addcoupon = () => {
       toast.success("Coupon Added Successfully");
     }
   
-    if(isSuccess && couponName && couponExpiry && couponDiscount ){
+    if(isSuccess && updatedCoupon ){
       toast.success("Coupon Updated Successfully");
+      navigate('/admin/coupon-list')
     }
     if(isError ){
       toast.error("Something went Wrong");
@@ -60,13 +61,20 @@ const Addcoupon = () => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
+      if(getCouponId !== undefined){
+        const data={id:getCouponId,couponData:values}
+        dispatch(updateACoupon(data))
+        dispatch(resetState())
+      }else{
       dispatch(createCoupon(values))
       formik.resetForm();
       
       setTimeout(()=> {
         dispatch(resetState())
         navigate('/admin/coupon-list')
-      },3000)
+      },300)
+      }
+      
     },
   });
   
