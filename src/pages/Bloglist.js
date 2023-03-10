@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { Table } from 'antd';
 import {BiEdit} from 'react-icons/bi'
 import {AiFillDelete} from 'react-icons/ai'
 import { useDispatch,useSelector } from 'react-redux';
-import { getBlogs } from '../features/blogs/blogSlice';
+import { deleteABlog, getBlogs, resetState } from '../features/blogs/blogSlice';
 import {Link} from "react-router-dom"
+import CustomModel from '../components/CustomModel';
 
 const columns= [
     {
@@ -28,8 +29,18 @@ const columns= [
  
 
 const Bloglist = () => {
+  const [open, setOpen] = useState(false);
+  const [blogId,setblogId]=useState("")
+  const showModal = (e) => {
+    setOpen(true);
+    setblogId(e);
+  };
+  const hideModal = () => {
+    setOpen(false);
+  };
   const dispatch=useDispatch();
   useEffect(()=>{
+      dispatch(resetState())
       dispatch(getBlogs())
   },[]);
   const getBlogState=useSelector((state)=>state.blogs.blogs )
@@ -40,9 +51,19 @@ const Bloglist = () => {
       name: getBlogState[i].title,
       category:getBlogState[i].category,
       actions:<>
-      <Link className='fs-3 ms-3 text-danger' to="/"><BiEdit/></Link>
-      <Link className='fs-3 ms-3 text-danger' to="/"><AiFillDelete/></Link></>
+      <Link className='fs-3 ms-3 text-danger' to={`/admin/blog/${getBlogState[i]._id}`}><BiEdit/></Link>
+      <button className='fs-3 ms-3 text-danger bg-transparent border-0' onClick={()=>showModal(getBlogState[i]._id)}><AiFillDelete/></button></>
     });
+  }
+  const deleteBlog=(e)=>{
+    setOpen(false);
+     dispatch(deleteABlog(e));
+    console.log(e);
+    setTimeout(()=>{
+      dispatch(getBlogs())
+    },200)
+    dispatch(getBlogs())
+   
   }
   return (
     <div><h3 className='mb-4 title'>Blogs List</h3>
@@ -50,6 +71,11 @@ const Bloglist = () => {
           <div>
               <Table columns={columns} dataSource={data1} />
           </div>
+          <CustomModel  hideModal={hideModal} 
+    open={open} 
+    performAction={()=>{deleteBlog(blogId)}}
+    title="Are you sure you want to delete this Blog ?"/>
+
       </div>
   )
 }

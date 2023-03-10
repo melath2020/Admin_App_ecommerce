@@ -65,14 +65,14 @@ const Brandlist = () => {
   return (
     <div><h3 className='mb-4 title'>Brands</h3>
 
-    <div>
+      <div>
         <Table columns={columns} dataSource={data1} />
+      </div>
+      <CustomModel hideModal={hideModal}
+        open={open}
+        performAction={() => { deleteBrand(brandId) }}
+        title="Are you sure you want to delete this brand ?" />
     </div>
-    <CustomModel  hideModal={hideModal} 
-    open={open} 
-    performAction={()=>{deleteBrand(brandId)}}
-    title="Are you sure you want to delete this brand ?"/>
-</div>
   )
 }
 
