@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Table } from 'antd';
-import {BiEdit} from 'react-icons/bi'
-import {AiFillDelete} from 'react-icons/ai'
+import {AiFillDelete,AiOutlineEye} from 'react-icons/ai'
 import { useDispatch,useSelector } from 'react-redux';
 import {Link} from "react-router-dom"
 import { getEnquiries } from '../features/enquiry/enquirySlice';
@@ -55,7 +54,10 @@ const Enquiries = () => {
         <option value="">Set Status</option>
         </select></>,
       actions:<>
-      <Link className='fs-3 ms-3 text-danger' to="/"><AiFillDelete/></Link></>
+       <Link className='fs-3 ms-3 text-danger' to="/"><AiOutlineEye/></Link>
+      <Link className='fs-3 ms-3 text-danger' to="/"><AiFillDelete/></Link>
+     </>
+      
     });
   }
   return (
