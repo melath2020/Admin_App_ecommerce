@@ -20,10 +20,18 @@ const getOrders=async()=>{
 
 const getOrder=async(id)=>{
     
-    const responce=await axios.post(`${base_url}user/getorderbyuser/${id}`,"",config)
+    const responce=await axios.get(`${base_url}user/getOrder/${id}`,config)
     
     return responce.data;
 }
+
+const updateOrder=async(data)=>{
+    
+    const responce=await axios.put(`${base_url}user/updateOrder/${data.id}`,{status:data.status},config)
+    
+    return responce.data;
+}
+
 
 
 
@@ -48,6 +56,7 @@ const authService={
     getOrders,
     getOrder,
     getMonthlyOrders,
-    getYearlyStats
+    getYearlyStats,
+    updateOrder 
 }
 export default authService;

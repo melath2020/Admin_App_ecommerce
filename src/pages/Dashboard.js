@@ -83,7 +83,7 @@ for (let i = 0; i < orderState?.length; i++) {
 }
 setorderData(data1)
   },[monthlyDataState,yearlyDataState])
- console.log()
+
   const config = {
     data:dataMonthly,
     xField: 'type',
