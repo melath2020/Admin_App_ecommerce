@@ -24,6 +24,7 @@ const Login = () => {
     validationSchema:schema,
     onSubmit: values => {
       dispatch(login(values))
+      window.location.reload()
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -62,9 +63,7 @@ const Login = () => {
        ) : null}
         </div>
         
-        <div className='mb-3 text-end'>
-          <Link to="forgot-password" className=""> Forgot Password</Link>
-        </div>
+        
         <button to="/admin" className='border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none fs-5' style={{background:"#ffd333"}} 
         type="submit">Login</button>
        </form>
