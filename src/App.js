@@ -30,7 +30,7 @@ function App() {
    <Router>
     <Routes>
       <Route path='/' element={<OpenRoutes><Login/></OpenRoutes>}/>
-      <Route path='/admin' element={<PrivateRoutes><MainLayout/></PrvateRoutes>}>
+      <Route path='/admin' element={<PrivateRoutes><MainLayout/></PrivateRoutes>}>
         <Route index element={<Dashboard/>}/>
         <Route path='enquiries' element={<Enquiries/>}/>
         <Route path='enquiries/:id' element={<ViewEnq/>}/>
