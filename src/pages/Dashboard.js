@@ -49,12 +49,14 @@ const Dashboard = () => {
   const [orderData,setorderData]=useState([])
   console.log(orderData)
   useEffect(()=>{
+    
     dispatch(getMonthlyData())
     dispatch(getYearlyData())
     dispatch(getOrders())
     
   },[])
-
+ 
+  
   useEffect(()=>{
     let monthNames=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     let data=[]
