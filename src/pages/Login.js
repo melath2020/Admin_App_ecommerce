@@ -25,7 +25,7 @@ const Login = () => {
     onSubmit: values => {
       dispatch(login(values))
       window.location.reload()
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
     },
   });
   const {user,isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
